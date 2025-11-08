@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   zookeeper:
-    image: ghcr.io/bitnami/zookeeper:3.9.2
+    image: bitnami/zookeeper:3.9.2
     container_name: zookeeper
     ports:
       - "2181:2181"
@@ -11,7 +11,7 @@ services:
     restart: always
 
   kafka:
-    image: ghcr.io/bitnami/kafka:3.7.0
+    image: bitnami/kafka:3.7.0
     container_name: kafka
     ports:
       - "9092:9092"
@@ -94,6 +94,7 @@ services:
       - order-service
       - mongo
     restart: always
+
 
 
 
