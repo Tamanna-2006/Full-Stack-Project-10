@@ -1,6 +1,6 @@
 services:
   zookeeper:
-    image: bitnami/zookeeper:3.9.2
+    image: bitnami/zookeeper:latest
     container_name: zookeeper
     ports:
       - "2181:2181"
@@ -9,7 +9,7 @@ services:
     restart: always
 
   kafka:
-    image: bitnami/kafka:3.6.0
+    image: bitnami/kafka:latest
     container_name: kafka
     ports:
       - "9092:9092"
@@ -88,5 +88,6 @@ services:
       - order-service
       - mongo
     restart: always
+
 
 
