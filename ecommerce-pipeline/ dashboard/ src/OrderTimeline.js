@@ -3,47 +3,35 @@ import axios from 'axios';
 
 export default function OrderTimeline() {
   const [orders, setOrders] = useState([]);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchOrders = async () => {
+    const interval = setInterval(async () => {
       try {
-        // Use environment variable or fallback to same origin proxy
-        const baseURL = process.env.REACT_APP_API_BASE_URL || '';
-        const res = await axios.get(`${baseURL}/api/orders`);
+        // Use Docker service name instead of localhost
+        const res = await axios.get('http://order-service:3001/api/orders');
         setOrders(res.data);
-        setError(null);
       } catch (err) {
-        console.error('Failed to fetch orders:', err.message);
-        setError('Could not connect to backend.');
+        console.error('Error fetching orders:', err.message);
       }
-    };
-
-    // Poll every 2 seconds
-    const interval = setInterval(fetchOrders, 2000);
-    fetchOrders();
+    }, 2000);
 
     return () => clearInterval(interval);
   }, []);
-
-  if (error) {
-    return <div style={{ color: 'red', padding: '20px' }}>{error}</div>;
-  }
 
   return (
     <div style={{ padding: '20px' }}>
       <h2>Order Timeline</h2>
       {orders.length === 0 ? (
-        <p>No orders found.</p>
+        <p>No orders yet.</p>
       ) : (
         orders.map(order => (
           <div
             key={order.orderId}
             style={{
-              border: '1px solid #ccc',
+              border: '1px solid black',
               borderRadius: '10px',
-              margin: '10px 0',
-              padding: '10px',
+              margin: '10px',
+              padding: '10px'
             }}
           >
             <h4>
@@ -52,7 +40,8 @@ export default function OrderTimeline() {
             <ul>
               {order.events.map(e => (
                 <li key={e.eventId}>
-                  {e.eventType} at {new Date(e.timestamp).toLocaleTimeString()}
+                  {e.eventType} at{' '}
+                  {new Date(e.timestamp).toLocaleTimeString()}
                 </li>
               ))}
             </ul>
@@ -62,4 +51,5 @@ export default function OrderTimeline() {
     </div>
   );
 }
+
 
